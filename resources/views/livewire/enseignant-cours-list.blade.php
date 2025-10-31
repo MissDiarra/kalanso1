@@ -26,101 +26,101 @@
         </select>
     </div>
 
-    <!-- les vues -->
+    <!-- les vues 
     <div class="mb-4">
         <button wire:click="$toggle('vueGrille')" class="text-sm text-blue-600">
             {{ $vueGrille ? 'Vue liste' : 'Vue grille' }}
         </button>
     </div>
+    -->
 
     <div class="{{ $vueGrille ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4' }}">
         @forelse ($cours as $c)
-            <div class="border p-4 mb-4 rounded shadow">
-                <h3 class="text-lg font-semibold truncate">{{ $c->titre }}</h3>
+            <div class="bg-white rounded-lg shadow-md p-4 flex flex-col gap-4">
+                {{-- Image du cours --}}
+                @if ($c->type === 'video')
+                    <video controls class="rounded-lg w-full h-40 object-cover">
+                        <source src="{{ Storage::url($c->media_path) }}" type="video/mp4">
+                    </video>
+                @elseif ($c->type === 'image')
+                    <img src="{{ Storage::url($c->media_path) }}" alt="Image du cours" class="rounded-lg w-full h-40 object-cover">
+                @endif
 
-                <!-- Badge accès -->
-                <div class="flex flex-wrap gap-2 mb-2"> 
-                    <span class="inline-block px-2 py-1 text-xs rounded 
-                        {{ $c->payant ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600' }}">
-                        {{ $c->payant ? 'Payant' : 'Gratuit' }}
+                {{-- Titre + Niveau --}}
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800 truncate">{{ $c->titre }}</h3>
+                    <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-600">
+                        {{ ucfirst($c->niveau) }}
                     </span>
                 </div>
 
-                <!-- Niveau -->
-                <span class="inline-block px-2 py-1 text-xs rounded bg-gray-100 text-gray-700 ml-2">
-                    Niveau : {{ ucfirst($c->niveau) }}
-                </span>
+                {{-- Description --}}
+                <p class="text-sm text-gray-600">{{ Str::limit($c->description, 100) }}</p>
 
-                <!-- Certificat -->
-                @if ($c->certificat_disponible)
-                    <span class="inline-block px-2 py-1 text-xs rounded bg-yellow-100 text-yellow-700 ml-2">
-                        🎓 Certificat disponible
-                    </span>
-                @endif
-
-                <!-- Description -->
-                <p class="text-sm text-gray-600">{{ $c->description }}</p>
-
-                <!-- Modules et chapitres -->
-                @php
-                    $modules = $c->modules;
-                @endphp
-
-                @if ($modules->count())
-                    <div class="mt-2">
-                        <h4 class="text-sm font-semibold">Modules</h4>
+                {{-- Modules --}}
+                @if ($c->modules->count())
+                    <div>
+                        <p class="text-xs font-semibold text-gray-500 mb-1">Modules :</p>
                         <ul class="list-disc list-inside text-sm text-gray-700">
-                            @foreach ($modules as $m)
-                                <li>
-                                    {{ $m->titre }}
-                                    @if ($m->chapitres->count())
-                                        <ul class="list-disc list-inside ml-4 text-xs text-gray-600">
-                                            @foreach ($m->chapitres as $ch)
-                                                <li>{{ $ch->titre }}</li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                </li>
+                            @foreach ($c->modules as $m)
+                                <li>{{ $m->titre }}</li>
                             @endforeach
                         </ul>
                     </div>
                 @endif
 
-                <!-- statut -->
-                <span class="inline-block px-2 py-1 text-xs rounded bg-blue-100 text-blue-600 ml-2">
-                    Statut : {{ ucfirst($c->statut) }}
-                </span>
+                {{-- Accès + Certificat --}}
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full {{ $c->payant ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600' }}">
+                        {{ $c->payant ? 'Payant' : 'Gratuit' }}
+                    </span>
 
-                <!-- Média -->
-                @if ($c->type === 'video')
-                    <video controls class="mt-2 w-full max-w-md">
-                        <source src="{{ Storage::url($c->media_path) }}" type="video/mp4">
-                        Votre navigateur ne supporte pas la lecture vidéo.
-                    </video>
-                @elseif ($c->type === 'image')
-                    <img src="{{ Storage::url($c->media_path) }}" alt="Image du cours" class="mt-2 w-full max-w-md rounded">
-                @endif
+                    @if ($c->certificat_disponible)
+                        <span class="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">
+                            🎓 Certificat disponible
+                        </span>
+                    @endif
 
-                <!-- pour le bouton voir plus -->
-                <button class="text-gray-500 hover:text-gray-700" title="Options">
-                    ⋮
-                </button>
-                <!-- redirection vers la page modif -->
-                <a href="{{ route('cours.details', $c->id) }}" class="text-sm text-blue-600 hover:underline">
-                    Voir les détails
-                </a>
+                    <span class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-700">
+                        Statut : {{ ucfirst($c->statut) }}
+                    </span>
+                </div>
 
-                <a href="{{ route('cours.edit', $c->id) }}" class="text-sm text-yellow-600 hover:underline mr-2">
-                    Modifier
-                </a>
-                <a href="#" wire:click="supprimer({{ $c->id }})" class="text-sm text-red-600 hover:underline">
-                    Supprimer
-                </a>
-
+                {{-- Boutons d'action --}}
+                <div class="flex justify-between items-center mt-4">
+                    <a href="{{ route('cours.edit', $c->id) }}" class="text-sm text-yellow-600 hover:underline">
+                        Modifier
+                    </a>
+                    <a href="#" wire:click="demanderSuppression({{ $c->id }})" class="text-sm text-red-600 hover:underline">
+                        Supprimer
+                    </a>
+                    <a href="{{ route('cours.details', $c->id) }}" class="text-sm text-blue-600 hover:underline">
+                        Voir détail
+                    </a>
+                </div>
             </div>
         @empty
-            <p>Aucun cours enregistré pour le moment.</p>
+            <p class="text-gray-500 text-sm">Aucun cours enregistré pour le moment.</p>
         @endforelse
     </div>
+
+    @if ($confirmationVisible)
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                <h2 class="text-lg font-semibold mb-4">Confirmer la suppression</h2>
+                <p class="text-sm text-gray-700 mb-4">Êtes-vous sûr de vouloir supprimer ce cours ? Cette action est irréversible.</p>
+
+                <div class="flex justify-end gap-4">
+                    <button wire:click="$set('confirmationVisible', false)" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+                        Annuler
+                    </button>
+                    <button wire:click="confirmerSuppression" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
 </div>
 

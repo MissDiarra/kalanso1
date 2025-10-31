@@ -28,4 +28,15 @@ class Cours extends Model
     {
         return $this->hasMany(Module::class);
     }
+
+    public function achats()
+    {
+        return $this->hasMany(Achat::class);
+    }
+
+    public function commentaires()
+    {
+        return $this->hasMany(Commentaire::class);
+    }
+
 }

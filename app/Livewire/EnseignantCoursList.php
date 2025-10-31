@@ -17,6 +17,8 @@ class EnseignantCoursList extends Component
     public $filtreNiveau = '';
     public $filtreStatut = '';
     public $vueGrille = true;
+    public $coursASupprimer;
+    public $confirmationVisible = false;
 
     public function mount()
     {
@@ -43,5 +45,18 @@ class EnseignantCoursList extends Component
         $this->mount(); // pour recharger la liste
     }
 
+    public function demanderSuppression($id)
+    {
+        $this->coursASupprimer = $id;
+        $this->confirmationVisible = true;
+    }
+
+    public function confirmerSuppression()
+    {
+        \App\Models\Cours::findOrFail($this->coursASupprimer)->delete();
+        $this->confirmationVisible = false;
+        $this->mount(); // recharge la liste
+        session()->flash('success', 'Cours supprimé avec succès.');
+    }
 
 }
