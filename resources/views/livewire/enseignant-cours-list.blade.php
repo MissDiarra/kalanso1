@@ -34,9 +34,9 @@
     </div>
     -->
 
-    <div class="{{ $vueGrille ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4' }}">
+    <div class="{{ $vueGrille ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-6' }}">
         @forelse ($cours as $c)
-            <div class="bg-white rounded-lg shadow-md p-4 flex flex-col gap-4">
+            <div class="bg-white rounded-xl shadow-md p-6 flex flex-col gap-4 min-h-[400px] transition duration-300 ease-in-out hover:bg-gray-50">
                 {{-- Image du cours --}}
                 @if ($c->type === 'video')
                     <video controls class="rounded-lg w-full h-40 object-cover">
@@ -47,7 +47,7 @@
                 @endif
 
                 {{-- Titre + Niveau --}}
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center mt-2">
                     <h3 class="text-lg font-semibold text-gray-800 truncate">{{ $c->titre }}</h3>
                     <span class="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-600">
                         {{ ucfirst($c->niveau) }}
@@ -55,22 +55,10 @@
                 </div>
 
                 {{-- Description --}}
-                <p class="text-sm text-gray-600">{{ Str::limit($c->description, 100) }}</p>
+                <p class="text-sm text-gray-600 leading-relaxed">{{ Str::limit($c->description, 100) }}</p>
 
-                {{-- Modules --}}
-                @if ($c->modules->count())
-                    <div>
-                        <p class="text-xs font-semibold text-gray-500 mb-1">Modules :</p>
-                        <ul class="list-disc list-inside text-sm text-gray-700">
-                            @foreach ($c->modules as $m)
-                                <li>{{ $m->titre }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
-                {{-- Accès + Certificat --}}
-                <div class="flex flex-wrap gap-2">
+                {{-- Accès + Certificat + Statut --}}
+                <div class="flex flex-wrap gap-2 mt-2">
                     <span class="text-xs px-2 py-1 rounded-full {{ $c->payant ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600' }}">
                         {{ $c->payant ? 'Payant' : 'Gratuit' }}
                     </span>
@@ -87,22 +75,32 @@
                 </div>
 
                 {{-- Boutons d'action --}}
-                <div class="flex justify-between items-center mt-4">
-                    <a href="{{ route('cours.edit', $c->id) }}" class="text-sm text-yellow-600 hover:underline">
-                        Modifier
+                <div class="flex flex-wrap gap-3 mt-4">
+                    <a href="{{ route('cours.edit', $c->id) }}"
+                        style="background-color: #f59e0b !important; color: white !important;"
+                        class="inline-block px-4 py-2 text-sm font-medium rounded shadow hover:bg-yellow-600">
+                            Modifier
                     </a>
-                    <a href="#" wire:click="demanderSuppression({{ $c->id }})" class="text-sm text-red-600 hover:underline">
+
+                    <button wire:click="demanderSuppression({{ $c->id }})"
+                        style="background-color: #ef4444 !important; color: white !important;"
+                        class="inline-block px-4 py-2 text-sm font-medium rounded shadow hover:bg-red-600">
                         Supprimer
+                    </button>
+
+                    <a href="{{ route('cours.details', $c->id) }}"
+                        style="background-color: #3b82f6 !important; color: white !important;"
+                        class="inline-block px-4 py-2 text-sm font-medium rounded shadow hover:bg-blue-600">
+                            Voir détail
                     </a>
-                    <a href="{{ route('cours.details', $c->id) }}" class="text-sm text-blue-600 hover:underline">
-                        Voir détail
-                    </a>
+
                 </div>
             </div>
         @empty
             <p class="text-gray-500 text-sm">Aucun cours enregistré pour le moment.</p>
         @endforelse
     </div>
+
 
     @if ($confirmationVisible)
         <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
