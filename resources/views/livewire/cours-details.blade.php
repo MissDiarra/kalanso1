@@ -33,16 +33,30 @@
         @endif
 
         <h3 class="text-lg font-semibold mt-4">Modules</h3>
+
         @foreach ($cours->modules as $m)
-            <div class="mb-2">
-                <p class="font-medium">{{ $m->titre }}</p>
-                <ul class="list-disc list-inside text-sm text-gray-600 ml-4">
-                    @foreach ($m->chapitres as $ch)
-                        <li>{{ $ch->titre }}</li>
-                    @endforeach
-                </ul>
+            <div x-data="{ open: false }" class="border rounded mb-2 p-4">
+                <div class="flex justify-between items-center cursor-pointer" @click="open = !open">
+                    <p class="font-medium">{{ $m->titre }}</p>
+
+                    <svg x-show="!open" class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                    <svg x-show="open" class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+
+                <div x-show="open" x-transition class="mt-2 ml-4">
+                    <ul class="list-disc list-inside text-sm text-gray-600">
+                        @foreach ($m->chapitres as $ch)
+                            <li>{{ $ch->titre }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         @endforeach
+
 
         @if ($cours->payant)
             @if ($dejaAchete)

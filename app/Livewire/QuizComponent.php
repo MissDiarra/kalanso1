@@ -11,7 +11,7 @@ class QuizComponent extends Component
 
     public function mount()
     {
-        $thiss->quizzes = Quiz::all();
+        $this->quizzes = Quiz::all();
     }
 
     public function render()

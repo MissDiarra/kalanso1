@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('quizzes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('module_id')->constrained()->onDelete('cascade');
+            $table->foreignId('module_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('titre');
             $table->json('questions')->nullable(); // structure JSON pour les QCM
             $table->timestamps();

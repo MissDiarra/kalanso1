@@ -39,4 +39,10 @@ class Cours extends Model
         return $this->hasMany(Commentaire::class);
     }
 
+    public function quizGlobal()
+    {
+        return $this->hasOne(Quiz::class)->whereNull('module_id');
+    }
+
+
 }
