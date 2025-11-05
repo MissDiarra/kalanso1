@@ -24,6 +24,16 @@
                             </x-nav-link>
                         @endif
                     @endauth
+
+                    <!-- Lien vers espace etudiant -->
+                    @auth
+                        @if (auth()->user()->role === 'etudiant')
+                            <x-nav-link href="{{ route('etudiant.cours.index') }}" :active="request()->routeIs('etudiant.cours.index')">
+                                {{ __('Espace Étudiant') }}
+                            </x-nav-link>
+                        @endif
+                    @endauth
+
                     <!-- Navigation Links -->
 
                     <!-- Navigation Links -->
@@ -154,6 +164,20 @@
             <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @auth
+                @if (Auth::user()->role === 'enseignant')
+                    <x-responsive-nav-link href="{{ route('enseignant.dashboard') }}" :active="request()->routeIs('enseignant.dashboard')">
+                        {{ __('Espace Enseignant') }}
+                    </x-responsive-nav-link>
+                @endif
+
+                @if (Auth::user()->role === 'etudiant')
+                    <x-responsive-nav-link href="{{ route('etudiant.cours.index') }}" :active="request()->routeIs('etudiant.cours.index')">
+                        {{ __('Espace Étudiant') }}
+                    </x-responsive-nav-link>
+                @endif
+            @endauth
         </div>
 
         <!-- Responsive Settings Options -->

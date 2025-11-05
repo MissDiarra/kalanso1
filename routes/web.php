@@ -1,12 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\CustomAuthenticatedSessionController;
 use App\Livewire\EnseignantDashboard;
 use App\Livewire\AjouterQuiz;
 use App\Livewire\AjouterCours;
 use App\Livewire\CoursDetails;
 use App\Livewire\ModifierCours;
+use App\Livewire\EtudiantCours;
+use App\Livewire\EtudiantCoursDetails;
 
+
+Route::post('/login', [CustomAuthenticatedSessionController::class, 'store'])
+    ->middleware(['web'])
+    ->name('login');
+    
 Route::get('/', function () {
     return view('welcome');
 });
@@ -29,4 +37,11 @@ Route::middleware(['auth', 'enseignant'])->group(function () {
     Route::get('/enseignant/cours', \App\Livewire\EnseignantCoursList::class)->name('enseignant.cours');
     Route::get('/enseignant/cours/{id}/details', CoursDetails::class)->name('cours.details');
     Route::get('/enseignant/cours/{id}/modifier', ModifierCours::class)->name('cours.edit');
+    
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/etudiant/cours', EtudiantCours::class)->name('etudiant.cours.index');
+    Route::get('/etudiant/cours/{id}', EtudiantCoursDetails::class)->name('etudiant.cours.details');
+
 });

@@ -19,6 +19,16 @@
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             </div>
 
+            <!--pour mieux faire la redirection-->
+            <div class="mt-4">
+                <x-label for="role" value="{{ __('Rôle') }}" />
+                <select id="role" name="role" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                    <option value="etudiant">Étudiant</option>
+                    <option value="enseignant">Enseignant</option>
+                </select>
+            </div>
+
+
             <div class="mt-4">
                 <x-label for="password" value="{{ __('Password') }}" />
                 <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
