@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Cours;
 use Livewire\WithPagination;
+use App\Models\CoursEtudiant;
 
 class EtudiantCours extends Component
 {
@@ -31,6 +32,14 @@ class EtudiantCours extends Component
             ->when($this->filtrePayant !== '', fn($q) => $q->where('payant', $this->filtrePayant))
             ->paginate(9);
 
+        // Injecter la progression dans chaque cours    
+        $progressions = CoursEtudiant::where('user_id', auth()->id())
+            ->pluck('progression', 'cours_id');
+
+        foreach ($cours as $c) {
+            $c->progression = $progressions[$c->id] ?? 0;
+        }
+   
         return view('livewire.etudiant-cours', [
             'cours' => $cours,
             'categories' => $this->categories,

@@ -43,6 +43,4 @@ class Cours extends Model
     {
         return $this->hasOne(Quiz::class)->whereNull('module_id');
     }
-
-
 }

@@ -78,14 +78,12 @@ class AjouterCours extends Component
             'intitule' => '',
             'reponses' => ['', '', '', ''],
             'bonne_reponse' => 0,
-        ];
-        
+        ];    
     }
 
     public function submit()
     {
         try {
-
             if (count($this->modules) === 0) {
                 session()->flash('error', 'Veuillez ajouter au moins un module.');
                 return;
@@ -107,7 +105,6 @@ class AjouterCours extends Component
 
             // ✅ Ensuite, valider
             $this->validate($this->rules());
-
             $path = $this->media->store('cours-media', 'public');
 
             $cours = Cours::create([
@@ -165,7 +162,9 @@ class AjouterCours extends Component
                 'titre', 'description', 'type', 'media', 'statut', 'niveau',
                 'categorie', 'modules', 'payant', 'certificat_disponible',
                 'quizzes', 'quizGlobal'
-            ]);    
+            ]);  
+            $this->niveau = '';
+  
 
         } catch (\Throwable $e) {
             \Log::error('Erreur lors de la soumission du cours : ', [

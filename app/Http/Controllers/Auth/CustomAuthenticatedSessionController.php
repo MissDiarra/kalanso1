@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+//use Illuminate\Http\Request;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController as BaseController;
+use Laravel\Fortify\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CustomAuthenticatedSessionController extends BaseController
 {
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
         $response = parent::store($request);
 

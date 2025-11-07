@@ -1,5 +1,12 @@
 <div class="p-6 bg-white rounded shadow">
-    <h2 class="text-xl font-bold mb-4">Créer un nouveau cours</h2>
+    <div class="flex items-center gap-4 mb-6">
+        <a href="{{ route('enseignant.cours') }}"
+        class="inline-flex items-center justify-center bg-gray-100 text-blue-700 p-2 rounded-full hover:bg-gray-200 transition duration-200"
+        title="Retour à mes cours">
+            <i class="fa-solid fa-chevron-left text-lg"></i>
+        </a>
+        <h2 class="text-xl font-bold text-gray-800">Créer un nouveau cours</h2>
+    </div>
 
     @if (session()->has('success'))
         <div class="mb-4 text-green-600 font-semibold">{{ session('success') }}</div>
@@ -11,7 +18,6 @@
 
     <form wire:submit.prevent="submit" class="space-y-6 min-h-screen">
         <!-- Informations générales -->
-
          <hr class="my-6">
          <h3 class="text-lg font-semibold text-gray-800">Informations générales</h3>
 
@@ -78,6 +84,7 @@
         <div>
             <label>Niveau</label>
             <select wire:model="niveau" class="w-full border rounded px-3 py-2">
+                <option value="">-- Choisir un niveau --</option>
                 <option value="débutant">Débutant</option>
                 <option value="intermédiaire">Intermédiaire</option>
                 <option value="avancé">Avancé</option>
@@ -201,20 +208,11 @@
             Chargement du fichier en cours...
         </div>
 
-        
-
-        
-
         <!-- Bouton d'enregistrement -->
-        <!--<div class="bg-white p-4 shadow mt-6"> -->
         <div class="bg-white p-4 shadow mt-6">
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
                 Enregistrer le cours
             </button>
         </div>
-
-
-
-
     </form>
 </div>

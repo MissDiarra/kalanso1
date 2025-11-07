@@ -1,30 +1,14 @@
 <div class="p-6">
-    <h2 class="text-xl font-bold mb-4">Mes cours enregistrés</h2>
+    <div class="flex items-center gap-4 mb-6">
+        <a href="{{ route('enseignant.dashboard') }}"
+        class="inline-flex items-center justify-center bg-gray-100 text-blue-700 p-2 rounded-full hover:bg-gray-200 transition duration-200"
+        title="Retour au dashboard">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </a>
 
-    <!-- formulaire de filtre -->
-    <div class="mb-6 flex flex-wrap gap-4">
-        <select wire:model="filtreCategorie" class="border rounded px-3 py-2">
-            <option value="">Toutes les catégories</option>
-            <option value="Design">Design</option>
-            <option value="Programmation">Programmation</option>
-            <option value="Mathematique">Mathematique</option>
-            <option value="Multimedia">Multimédia</option>
-            
-        </select>
-
-        <select wire:model="filtreNiveau" class="border rounded px-3 py-2">
-            <option value="">Tous les niveaux</option>
-            <option value="débutant">Débutant</option>
-            <option value="intermédiaire">Intermédiaire</option>
-            <option value="avancé">Avancé</option>
-        </select>
-
-        <select wire:model="filtreStatut" class="border rounded px-3 py-2">
-            <option value="">Tous les statuts</option>
-            <option value="brouillon">Brouillon</option>
-            <option value="publie">Publié</option>
-        </select>
+        <h2 class="text-xl font-bold text-gray-800">Mes cours enregistrés</h2>
     </div>
+
 
     <!-- les vues 
     <div class="mb-4">

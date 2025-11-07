@@ -9,6 +9,7 @@ use App\Livewire\CoursDetails;
 use App\Livewire\ModifierCours;
 use App\Livewire\EtudiantCours;
 use App\Livewire\EtudiantCoursDetails;
+use App\Http\Controllers\EtudiantCoursController;
 
 
 Route::post('/login', [CustomAuthenticatedSessionController::class, 'store'])
@@ -42,6 +43,8 @@ Route::middleware(['auth', 'enseignant'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/etudiant/cours', EtudiantCours::class)->name('etudiant.cours.index');
-    Route::get('/etudiant/cours/{id}', EtudiantCoursDetails::class)->name('etudiant.cours.details');
-
+    Route::get('/etudiant/cours/{id}/live', EtudiantCoursDetails::class)->name('etudiant.cours.live');
+    Route::get('/etudiant/cours/{id}/commencer', [EtudiantCoursController::class, 'commencer'])->name('etudiant.cours.commencer');
+    Route::get('/etudiant/cours/{id}/recommencer', [EtudiantCoursController::class, 'recommencer'])->name('etudiant.cours.recommencer');
+    Route::get('/etudiant/cours/{id}', [EtudiantCoursController::class, 'details'])->name('etudiant.cours.details');
 });
